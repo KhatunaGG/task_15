@@ -1,18 +1,15 @@
-const { Router } = require("express");
-const movieModel = require("../db/movies.model");
+const movieModel = require("../../db/movies.model");
 
-const movieRouter = Router();
-
-movieRouter.get("/", async (req, res) => {
+const getAllMovies = async (req, res) => {
   try {
     const movies = await movieModel.find();
     res.status(200).json(movies);
   } catch (error) {
     console.log(error);
   }
-});
+};
 
-movieRouter.get("/:id", async (req, res) => {
+const getMoviesById = async (req, res) => {
   try {
     const { id } = req.params;
     if (!id) return res.status(404).json({ error: true, message: "Not Found" });
@@ -21,9 +18,9 @@ movieRouter.get("/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-});
+};
 
-movieRouter.post("/", async (req, res) => {
+const createMovies = async (req, res) => {
   try {
     const { title, year, isBookmarked } = req.body;
     const existMovie = await movieModel.findOne({ title });
@@ -36,9 +33,9 @@ movieRouter.post("/", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-});
+};
 
-movieRouter.delete("/:id", async (req, res) => {
+const deleteMovies = async (req, res) => {
   try {
     const { id } = req.params;
     if (!id) return res.status(404).json({ error: true, message: "Not Found" });
@@ -47,9 +44,9 @@ movieRouter.delete("/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-});
+};
 
-movieRouter.put("/:id", async (req, res) => {
+const updateMovies = async (req, res) => {
   try {
     const { id } = req.params;
     const { title, year, isBookmarked } = req.body;
@@ -65,6 +62,6 @@ movieRouter.put("/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-});
+};
 
-module.exports = movieRouter;
+module.exports = { getAllMovies, getMoviesById, createMovies, deleteMovies, updateMovies };
